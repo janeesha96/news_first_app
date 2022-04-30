@@ -22,18 +22,32 @@ class CustomTextStyle {
       fontFamily: 'Nunito-Black',
     );
   }
+   TextStyle headlineBlack() {
+    return Theme.of(context).textTheme.headline5!.copyWith(
+      color: Colors.black,
+      fontSize: _device  == Device.Mobile ? 25 : 40,
+      fontFamily: 'Nunito-Black',
+    );
+  }
 
   TextStyle subhead() {
     return Theme.of(context).textTheme.subtitle1!.copyWith(
         color: Colors.white,
         fontSize: _device  == Device.Mobile ? 15 : 30,
-        fontFamily: 'Brandon_reg'
+        fontFamily: 'Nunito-Light'
     );
   }
 
   TextStyle body1() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.white,
+        fontSize: _device  == Device.Mobile ? 20 : 30,
+        fontFamily: 'Nunito-Black'
+    );
+  }
+  TextStyle body3() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Colors.black,
         fontSize: _device  == Device.Mobile ? 20 : 30,
         fontFamily: 'Nunito-Black'
     );
@@ -69,6 +83,14 @@ class CustomTextStyle {
       color: Colors.white,
       fontSize: _device  == Device.Mobile ? 15 : 25,
       fontFamily: 'Nunito-Black',
+    );
+  }
+
+  TextStyle blueText() {
+    return Theme.of(context).textTheme.button!.copyWith(
+      color: Colors.blue,
+      fontSize: _device  == Device.Mobile ? 15 : 25,
+      fontFamily: 'Nunito-SemiBold',
     );
   }
 

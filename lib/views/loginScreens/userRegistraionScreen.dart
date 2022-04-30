@@ -5,8 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:news_first_app/views/loginScreens/loginScreen.dart';
 
-
-
 import '../../utilities/AppColors.dart';
 import '../../utilities/CustomTextStyle.dart';
 import '../../utilities/DeviceType.dart';
@@ -16,8 +14,6 @@ import '../../utilities/widgets/Button.dart';
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
 
-
-
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -26,13 +22,13 @@ class _RegisterState extends State<Register> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool loaderVisible = false;
   bool validEmail = false, validPass = false, validConfirmPass = false;
-  String email = "", password="", confirmPassword="";
+  String email = "", password = "", confirmPassword = "";
 
   @override
   void initState() {
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -60,258 +56,241 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                     
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                            child: Image.asset(
-                              'assets/images/logo.png',
-                              fit: BoxFit.fitHeight,
-                              height: height * 0.15,
-                              width: double.infinity,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.fitHeight,
+                          height: height * 0.15,
+                          width: double.infinity,
+                        ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            height: textViewHeight,
+                            margin: EdgeInsets.only(
+                              left: width * 0.07,
+                              right: width * 0.07,
+                              top: width * 0.05,
+                            ),
+                            child: TextField(
+                              onChanged: (value) {
+                                email = value.trim();
+
+                                if (validateEmail(email) == '') {
+                                  setState(() {
+                                    validEmail = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    validEmail = false;
+                                  });
+                                }
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              style: CustomTextStyle(context)
+                                  .body2Small()
+                                  .copyWith(
+                                    color: HexColor(AppColors.primaryColor),
+                                  ),
+                              decoration: InputDecoration(
+                                  focusedErrorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20))),
+                                  hintText: "Enter Email",
+                                  errorText: validateEmail(email),
+                                  errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                             ),
                           ),
-                      
-                          Column(
-                            children: <Widget>[
-                              Container(
-                                height: textViewHeight,
-                                margin: EdgeInsets.only(
-                                  left: width * 0.07,
-                                  right: width * 0.07,
-                                  top: width * 0.05,
-                                ),
-                                child: TextField(
-                                  onChanged: (value) {
-                                    email = value.trim();
-
-                                    if (validateEmail(email) == '') {
-                                      setState(() {
-                                        validEmail = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        validEmail = false;
-                                      });
-                                    }
-                                  },
-                                  keyboardType:
-                                  TextInputType.emailAddress,
-                                  style: CustomTextStyle(context)
-                                      .body2Small()
-                                      .copyWith(
-                                    color: HexColor(
-                                        AppColors.primaryColor),
-                                  ),
-                                  decoration: InputDecoration(
-                                      focusedErrorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      errorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      enabledBorder:
-                                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 3), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                      hintText: "Enter Email",
-                                      errorText: validateEmail(email),
-                                      errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                              Container(
-                                height: textViewHeight,
-                                margin: EdgeInsets.only(
-                                    left: width * 0.07,
-                                    right: width * 0.07,
-                                    top: width * 0.01,
-                                    bottom: width * 0.0),
-                                child: TextField(
-                                  onChanged: (value) {
-                                    password = value.trim();
-                                    if (validatePassword(value) == '') {
-                                      setState(() {
-                                        validPass = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        validPass = false;
-                                      });
-                                    }
-                                  },
-                                  style: CustomTextStyle(context)
-                                      .body2Small()
-                                      .copyWith(
-                                    color: HexColor(
-                                        AppColors.primaryColor),
-                                  ),
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                      focusedErrorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      errorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      enabledBorder:
-                                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 3), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                      hintText: "Enter Password",
-                                      errorText: validatePassword(password ),
-                                      errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                              Container(
-                                height: textViewHeight,
-                                margin: EdgeInsets.only(
-                                    left: width * 0.07,
-                                    right: width * 0.07,
-                                    top: width * 0.01,
-                                    bottom: width * 0.04),
-                                child: TextField(
-                                  obscureText: true,
-                                  onChanged: (value) {
-                                    confirmPassword = value.trim();
-
-                                    if (validateConfirmPassword(
-                                        password ,
-                                        confirmPassword ) ==
-                                        '') {
-                                      setState(() {
-                                        validConfirmPass = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        validConfirmPass = false;
-                                      });
-                                    }
-
-                                    confirmPassword = value.trim();
-                                  },
-                                  style: CustomTextStyle(context)
-                                      .body2Small()
-                                      .copyWith(
-                                    color: HexColor(
-                                        AppColors.primaryColor),
-                                  ),
-                                  decoration: InputDecoration(
-                                      focusedErrorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      errorBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      enabledBorder:
-                                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 3), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                      hintText: "Confirm Password",
-                                      errorText: validateConfirmPassword(password , confirmPassword),
-                                      errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                              Button(
-                                name: '  Sign Up  ',
-                                itemClick: validateFields() == true
-                                    ? () {
-                                  registerUser();
+                          Container(
+                            height: textViewHeight,
+                            margin: EdgeInsets.only(
+                                left: width * 0.07,
+                                right: width * 0.07,
+                                top: width * 0.01,
+                                bottom: width * 0.0),
+                            child: TextField(
+                              onChanged: (value) {
+                                password = value.trim();
+                                if (validatePassword(value) == '') {
+                                  setState(() {
+                                    validPass = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    validPass = false;
+                                  });
                                 }
-                                    : null, textStyle: null,
-                              ),
-                               SizedBox(
-                                  height: width * 0.14,
-                                ),
-                               
-                                Container(
-                                  height: 2,
-                                  width: double.maxFinite,
-                                  color: Colors.grey[300],
-                                  margin: const EdgeInsets.only(
-                                      top: 40, bottom: 40),
-                                ),
-                              InkWell(
-                                onTap: () {
-                                 
-                                 
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => const LoginScreen(
-                                            
-                                            )));
-                                 
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Already Have an Account?',
-                                      style: CustomTextStyle(context)
-                                          .title()
-                                          .copyWith(
-                                          color: HexColor(AppColors
-                                              .primaryColor)),
-                                    ),
-                                    Text(
-                                      '  Sign In',
-                                      style: CustomTextStyle(context)
-                                          .title()
-                                          .copyWith(
-                                          color: HexColor(
-                                              AppColors.mainColor)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
+                              },
+                              style: CustomTextStyle(context)
+                                  .body2Small()
+                                  .copyWith(
+                                    color: HexColor(AppColors.primaryColor),
+                                  ),
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  focusedErrorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20))),
+                                  hintText: "Enter Password",
+                                  errorText: validatePassword(password),
+                                  errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                            ),
                           ),
-                      
+                          Container(
+                            height: textViewHeight,
+                            margin: EdgeInsets.only(
+                                left: width * 0.07,
+                                right: width * 0.07,
+                                top: width * 0.01,
+                                bottom: width * 0.04),
+                            child: TextField(
+                              obscureText: true,
+                              onChanged: (value) {
+                                confirmPassword = value.trim();
+
+                                if (validateConfirmPassword(
+                                        password, confirmPassword) ==
+                                    '') {
+                                  setState(() {
+                                    validConfirmPass = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    validConfirmPass = false;
+                                  });
+                                }
+
+                                confirmPassword = value.trim();
+                              },
+                              style: CustomTextStyle(context)
+                                  .body2Small()
+                                  .copyWith(
+                                    color: HexColor(AppColors.primaryColor),
+                                  ),
+                              decoration: InputDecoration(
+                                  focusedErrorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 3),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20))),
+                                  hintText: "Confirm Password",
+                                  errorText: validateConfirmPassword(password, confirmPassword),
+                                  errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          Button(
+                            name: '  Sign Up  ',
+                            itemClick: validateFields() == true
+                                ? () {
+                                    registerUser();
+                                  }
+                                : null,
+                            textStyle: null,
+                          ),
+                          SizedBox(
+                            height: width * 0.14,
+                          ),
+                          Container(
+                            height: 2,
+                            width: double.maxFinite,
+                            color: Colors.grey[300],
+                            margin: const EdgeInsets.only(top: 40, bottom: 40),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Already Have an Account?',
+                                  style: CustomTextStyle(context)
+                                      .title()
+                                      .copyWith(
+                                          color:
+                                              HexColor(AppColors.primaryColor)),
+                                ),
+                                Text(
+                                  '  Sign In',
+                                  style: CustomTextStyle(context)
+                                      .title()
+                                      .copyWith(
+                                          color: HexColor(AppColors.mainColor)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                         height: width * 0.09,
                       ),
-                      
                     ],
                   ),
                 ),
               ),
-          
             ],
           ),
         ));
@@ -340,7 +319,7 @@ class _RegisterState extends State<Register> {
   String validateEmail(String email) {
     if (email.isEmpty) {
       return 'Provide an Email';
-    }  else {
+    } else {
       return '';
     }
   }
@@ -365,9 +344,7 @@ class _RegisterState extends State<Register> {
       "Password": password,
       "ConfirmPassword": password
     };
-   
   }
-
 
   Widget progressView(bool show) {
     if (loaderVisible) {
