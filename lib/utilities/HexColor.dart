@@ -1,6 +1,8 @@
 
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class HexColor extends Color{
 
   HexColor(String value) : super(getColorFromHex(value));
@@ -16,4 +18,12 @@ class HexColor extends Color{
     return int.parse(hexColor, radix: 16);
   }
 
+}
+
+Text appBarTitle(String title, {Color? color, FontWeight? fontWeight}) {
+  return Text(
+    title,
+    style: TextStyle(fontSize: 15, color: color ?? Colors.white, fontWeight: fontWeight ?? FontWeight.w600),
+    textAlign: TextAlign.center,
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_first_app/utilities/widgets/Button.dart';
+import 'package:news_first_app/views/dashboard/home.dart';
 
 import '../../utilities/AppColors.dart';
 import '../../utilities/CustomTextStyle.dart';
@@ -296,7 +297,17 @@ class _LoginScreenState extends State<LoginScreen> {
       return '';
     }
   }
-  login(){
+  login() async{
+
+    await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const  HomeView(
+                                                   
+                                                  )));
+
+   
     
   }
 }
