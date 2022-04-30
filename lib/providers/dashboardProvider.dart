@@ -31,7 +31,7 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isSearchModeOn = false;
+  bool _isSearchModeOn = true;
   String _searchString = '';
 
   bool get isSearchModeOn => _isSearchModeOn;
@@ -44,6 +44,13 @@ void toggleAppbarSearchMode(bool val) {
 
 void setSearchString(String val) {
     _searchString = val;
+    notifyListeners();
+  }
+
+   int _tabIndex = 0;
+  int get tabIndex => _tabIndex;
+  setTabIndex(int tabIndex) {
+    _tabIndex = tabIndex;
     notifyListeners();
   }
 

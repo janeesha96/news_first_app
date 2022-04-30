@@ -56,6 +56,7 @@ class HomeView extends StatelessWidget {
      selectedItemColor: HexColor(
                                                 AppColors.mainColor),
       elevation: 12,
+      // if want animation behavior un comment below type.
      // type: BottomNavigationBarType.shifting,
       onTap: (index) {
         dashboardProvider.currentTab = index;
