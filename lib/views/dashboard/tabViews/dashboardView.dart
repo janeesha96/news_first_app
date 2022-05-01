@@ -5,6 +5,8 @@ import 'package:news_first_app/providers/dashboardProvider.dart';
 import 'package:news_first_app/utilities/HexColor.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/newsData.dart';
+import '../../../services/apiServices.dart';
 import '../../../utilities/AppColors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,6 +25,7 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
+  late NewsData? _newsdata;
 
   bool isLoading = false;
   List<int> items = [
@@ -35,7 +38,7 @@ class _DashboardViewState extends State<DashboardView>
     8,
     8,
   ];
-  int _selectedTabIndex = 0;
+
 
   @override
   void initState() {
@@ -44,15 +47,28 @@ class _DashboardViewState extends State<DashboardView>
       setState(() {
         isLoading = true;
       });
+      _getNewsData();
       final ind =
           Provider.of<DashboardProvider>(context, listen: false).tabIndex;
       tabController.animateTo(ind);
-      _selectedTabIndex = ind;
+  
     });
 
-    // TODO: implement initState
+  
     super.initState();
   }
+
+  void _getNewsData() async{
+
+    _newsdata = await NewsApiService.getNewsHeadLines();
+    print(_newsdata);
+    setState(() {
+        isLoading = false;
+      });
+    
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +76,7 @@ class _DashboardViewState extends State<DashboardView>
     double height = MediaQuery.of(context).size.height;
     final dashboardProvider = Provider.of<DashboardProvider>(context);
     return SafeArea(
-      child: Container(
+      child: isLoading? const Center(child: CircularProgressIndicator(),): Container(
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(15),
@@ -77,34 +93,9 @@ class _DashboardViewState extends State<DashboardView>
                       textInputAction: TextInputAction.search,
                       onChanged: (val) {
                         dashboardProvider.setSearchString(val.toLowerCase());
-                        // setState(() {
-                        //   complaintsAppDashboardProvider.complaintsList =
-                        //       complaintsAppDashboardProvider.complaintsList
-                        //           .where((element) {
-                        //     var complaintsTitle = element.title.toLowerCase();
-                        //     var storeName = element.store.code.toLowerCase();
-                        //     var pcNo = element.pcNo.toString();
-                        //     var caseNo = element.caseNo.toString();
-                        //     var staffName = element.staffName.toLowerCase();
-
-                        //     return complaintsTitle.contains(val.toLowerCase()) ||
-                        //         storeName.contains(val.toLowerCase()) ||
-                        //         pcNo.contains(val) ||
-                        //         caseNo.contains(val) ||
-                        //         staffName.contains(val.toLowerCase());
-                        //   }).toList();
-
-                        // });
-
-                        // if (dashboardProvider.searchString == '') {
-                        //   _getComplaintsListData();
-                        // }
+                      
                       },
-                      // onFieldSubmitted: (val) {
-                      //   complaintsAppDashboardProvider
-                      //       .setSearchString(val.toLowerCase());
-                      //  // FocusScope.of(context).unfocus();
-                      // },
+                     
                       decoration: InputDecoration(
                           focusedErrorBorder: const OutlineInputBorder(
                               borderSide:
@@ -257,8 +248,7 @@ class _DashboardViewState extends State<DashboardView>
                                   color: HexColor(AppColors.mainColor)),
                               onTap: (idx) {
                                 setState(() {
-                                  _selectedTabIndex = idx;
-
+                                
                                   provider.setTabIndex(idx);
                                 });
                               },
