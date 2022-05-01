@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_first_app/utilities/SessionManager.dart';
 import 'package:news_first_app/utilities/widgets/Button.dart';
 import 'package:news_first_app/views/dashboard/home.dart';
 
@@ -7,6 +8,7 @@ import '../../utilities/AppColors.dart';
 import '../../utilities/CustomTextStyle.dart';
 import '../../utilities/DeviceType.dart';
 import '../../utilities/HexColor.dart';
+import '../../utilities/widgets/customToast.dart';
 import 'userRegistraionScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,11 +19,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   bool loaderVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool validEmail = false, validPass = false;
-  String email = "";
+  bool validName = false, validPass = false;
+  String name = "";
   String password = "";
+  late bool? validUser;
+
+  @override
+  void initState() {
+    SessionManager().getUser().then((value) {
+              if (value) {
+
+                Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const HomeView()));
+                
+              } 
+            });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 left: 30, right: 30, top: 20),
                             child: TextFormField(
                               autofocus: false,
-                              autofillHints: const [AutofillHints.email],
+                              autofillHints: const [AutofillHints.name],
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 focusedErrorBorder: const OutlineInputBorder(
@@ -92,21 +109,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: Colors.black, width: 3),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                hintText: "Enter Email...",
-                                errorText: validateEmail(email),
+                                hintText: "Enter User Name...",
+                                errorText: validateName(name),
                                 errorStyle: const TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold),
                               ),
                               onChanged: (value) {
-                                email = value.trim();
-                                if (validateEmail(email) == '') {
+                                name = value.trim();
+                                if (validateName(name) == '') {
                                   setState(() {
-                                    validEmail = true;
+                                    validName = true;
                                   });
                                 } else {
                                   setState(() {
-                                    validEmail = false;
+                                    validName = false;
                                   });
                                 }
                               },
@@ -242,12 +259,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool validateFields() {
-    return (validPass && validEmail);
+    return (validPass && validName);
   }
 
-  String validateEmail(String email) {
-    if (email.isEmpty) {
-      return 'Provide an Email';
+  String validateName(String name) {
+    if (name.isEmpty) {
+      return 'Provide an Name';
     } else {
       return '';
     }
@@ -264,7 +281,26 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
-    await Navigator.push(
+
+   validUser = await SessionManager().validateUser(name, password);
+   if(validUser!){
+      SuccessMsg.show(
+                context, 'Success', 'Welcome to the News First',
+                key: _scaffoldKey);
+     SessionManager().setUser(true);
+    await  Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const HomeView()));
+        
+
+   } else {
+     ErrorMsg.show(context, 'Error', "Invalid username or password",
+              key: _scaffoldKey);
+
+   }
+
+
+
+
+    
   }
 }

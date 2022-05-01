@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 
+
+
 enum Device {
   Mobile,
   Tab
 }
+
 
 class DeviceType{
   double width;

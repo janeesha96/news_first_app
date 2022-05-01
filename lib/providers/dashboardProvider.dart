@@ -22,15 +22,6 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? _complaintsListCurrentTab;
-
-  int get complaintsListCurrentTab => _complaintsListCurrentTab ??0 ;
-
-  set complaintsListCurrentTab(int data) {
-    _complaintsListCurrentTab = data;
-    notifyListeners();
-  }
-
   bool _isSearchModeOn = true;
   String _searchString = '';
 
