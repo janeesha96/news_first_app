@@ -28,19 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool? validUser;
 
   @override
-  void initState() {
-    SessionManager().getUser().then((value) {
-              if (value) {
-
-                Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomeView()));
-                
-              } 
-            });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -284,11 +271,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
    validUser = await SessionManager().validateUser(name, password);
    if(validUser!){
-      SuccessMsg.show(
-                context, 'Success', 'Welcome to the News First',
-                key: _scaffoldKey);
+
      SessionManager().setUser(true);
-    await  Navigator.pushReplacement(
+     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const HomeView()));
         
 
