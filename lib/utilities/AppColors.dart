@@ -9,5 +9,6 @@ class AppColors {
   static String bgGray = '#E5E5E5';
   static String strokeColor ='#DFDFDF';
   static String inactiveGray = '#878787';
+   static String highlightColor = '#00FF00';
 
 }

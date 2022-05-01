@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_first_app/utilities/SessionManager.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/dashboardProvider.dart';
 import '../../../utilities/widgets/Button.dart';
 import '../../loginScreens/loginScreen.dart';
 
@@ -12,8 +15,10 @@ class MyProfileView extends StatefulWidget {
 }
 
 class _MyProfileViewState extends State<MyProfileView> {
+  
   @override
   Widget build(BuildContext context) {
+    
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -46,7 +51,10 @@ class _MyProfileViewState extends State<MyProfileView> {
   }
 
   logOut() {
-    Navigator.push(
+   final dashboardProvider = Provider.of<DashboardProvider>(context,listen: false);
+   dashboardProvider.currentTab = 0;
+    SessionManager().deleteUser();
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }

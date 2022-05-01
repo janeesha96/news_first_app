@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_first_app/providers/dashboardProvider.dart';
-import 'package:news_first_app/views/loginScreens/loginScreen.dart';
+import 'package:news_first_app/views/loginScreens/WelcomeScreen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'News First',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }

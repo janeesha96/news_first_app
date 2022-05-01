@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:news_first_app/views/dashboard/home.dart';
 import 'package:news_first_app/views/loginScreens/loginScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utilities/AppColors.dart';
 import '../../utilities/CustomTextStyle.dart';
 import '../../utilities/DeviceType.dart';
 import '../../utilities/HexColor.dart';
+import '../../utilities/SessionManager.dart';
 import '../../utilities/widgets/Button.dart';
 
 class Register extends StatefulWidget {
@@ -21,8 +24,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool loaderVisible = false;
-  bool validEmail = false, validPass = false, validConfirmPass = false;
-  String email = "", password = "", confirmPassword = "";
+  bool validName = false, validPass = false, validConfirmPass = false;
+  String name = "", password = "", confirmPassword = "";
 
   @override
   void initState() {
@@ -76,15 +79,15 @@ class _RegisterState extends State<Register> {
                             ),
                             child: TextField(
                               onChanged: (value) {
-                                email = value.trim();
+                                name = value.trim();
 
-                                if (validateEmail(email) == '') {
+                                if (validateName(name) == '') {
                                   setState(() {
-                                    validEmail = true;
+                                    validName = true;
                                   });
                                 } else {
                                   setState(() {
-                                    validEmail = false;
+                                    validName = false;
                                   });
                                 }
                               },
@@ -117,8 +120,8 @@ class _RegisterState extends State<Register> {
                                           color: Colors.black, width: 3),
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(20))),
-                                  hintText: "Enter Email",
-                                  errorText: validateEmail(email),
+                                  hintText: "Enter User Name..",
+                                  errorText: validateName(name),
                                   errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                             ),
                           ),
@@ -316,9 +319,9 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  String validateEmail(String email) {
+  String validateName(String email) {
     if (email.isEmpty) {
-      return 'Provide an Email';
+      return 'Provide a User Name';
     } else {
       return '';
     }
@@ -326,7 +329,7 @@ class _RegisterState extends State<Register> {
 
   bool validateFields() {
     return (validPass == true &&
-        validEmail == true &&
+        validName == true &&
         validConfirmPass == true);
   }
 
@@ -336,14 +339,18 @@ class _RegisterState extends State<Register> {
     });
   }
 
-  registerUser() {
+  registerUser() async {
     FocusScope.of(context).requestFocus(FocusNode());
     _showLoader(true);
-    var params = {
-      "Email": email,
-      "Password": password,
-      "ConfirmPassword": password
-    };
+    SessionManager().setUser(true);
+    SessionManager().setUsers(name, password);
+    
+
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const HomeView()));
+
+
   }
 
   Widget progressView(bool show) {
