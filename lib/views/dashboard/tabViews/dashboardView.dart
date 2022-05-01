@@ -14,6 +14,7 @@ import '../../../utilities/CustomTextStyle.dart';
 import 'categoryView.dart';
 import 'detailView.dart';
 import 'newsListView.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
@@ -25,7 +26,9 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
-  late NewsData? _newsdata;
+  NewsData? _headlinesNewsdata;
+  String filterString = "Healthy";
+  late int articleLength;
 
   bool isLoading = false;
   List<int> items = [
@@ -39,7 +42,6 @@ class _DashboardViewState extends State<DashboardView>
     8,
   ];
 
-
   @override
   void initState() {
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
@@ -51,24 +53,20 @@ class _DashboardViewState extends State<DashboardView>
       final ind =
           Provider.of<DashboardProvider>(context, listen: false).tabIndex;
       tabController.animateTo(ind);
-  
     });
-
-  
     super.initState();
   }
 
-  void _getNewsData() async{
+  void _getNewsData() async {
+    _headlinesNewsdata = await NewsApiService.getNewsHeadLines();
+    print(_headlinesNewsdata);
 
-    _newsdata = await NewsApiService.getNewsHeadLines();
-    print(_newsdata);
-    setState(() {
+    if (_headlinesNewsdata != null) {
+      setState(() {
         isLoading = false;
       });
-    
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,207 +74,269 @@ class _DashboardViewState extends State<DashboardView>
     double height = MediaQuery.of(context).size.height;
     final dashboardProvider = Provider.of<DashboardProvider>(context);
     return SafeArea(
-      child: isLoading? const Center(child: CircularProgressIndicator(),): Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      style: const TextStyle(color: Colors.black),
-
-                      autofocus: false,
-                      cursorColor: Colors.black,
-                      textInputAction: TextInputAction.search,
-                      onChanged: (val) {
-                        dashboardProvider.setSearchString(val.toLowerCase());
-                      
-                      },
-                     
-                      decoration: InputDecoration(
-                          focusedErrorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          hintText: "Dogecoin to the Moon..",
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                dashboardProvider.isSearchModeOn
-                                    ? dashboardProvider
-                                        .toggleAppbarSearchMode(false)
-                                    : dashboardProvider
-                                        .toggleAppbarSearchMode(true);
-                              },
-                              icon: dashboardProvider.isSearchModeOn
-                                  ? const Icon(
-                                      Icons.search_rounded,
-                                      color: Colors.black,
-                                    )
-                                  : const Icon(
-                                      Icons.close,
-                                      color: Colors.black,
-                                    ))),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Visibility(
-                    visible: dashboardProvider.isSearchModeOn,
-                    child: CircleAvatar(
-                      backgroundColor: HexColor(AppColors.mainColor),
-                      radius: 20,
-                      child: SvgPicture.asset('assets/images/notification.svg'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Visibility(
-                visible: dashboardProvider.isSearchModeOn,
+      child: isLoading || _headlinesNewsdata == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Text(
-                          "Latest News",
-                          style: CustomTextStyle(context)
-                              .headlineBlack()
-                              .copyWith(
-                                  color: HexColor(AppColors.primaryColor)),
+                        Expanded(
+                          child: TextFormField(
+                            style: const TextStyle(color: Colors.black),
+                            autofocus: false,
+                            cursorColor: Colors.black,
+                            textInputAction: TextInputAction.search,
+                            onChanged: (val) {
+                              dashboardProvider
+                                  .setSearchString(val.toLowerCase());
+                            },
+                            decoration: InputDecoration(
+                                focusedErrorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                errorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 3),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                hintText: "Dogecoin to the Moon..",
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      dashboardProvider.isSearchModeOn
+                                          ? dashboardProvider
+                                              .toggleAppbarSearchMode(false)
+                                          : dashboardProvider
+                                              .toggleAppbarSearchMode(true);
+                                    },
+                                    icon: dashboardProvider.isSearchModeOn
+                                        ? const Icon(
+                                            Icons.search_rounded,
+                                            color: Colors.black,
+                                          )
+                                        : const Icon(
+                                            Icons.close,
+                                            color: Colors.black,
+                                          ))),
+                          ),
                         ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NewsListView()));
-                          },
-                          child: Row(
-                            children: [
-                              Text('See All',
-                                  style: CustomTextStyle(context).blueText()),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const Icon(
-                                Icons.navigate_next,
-                                color: Colors.blue,
-                              )
-                            ],
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Visibility(
+                          visible: dashboardProvider.isSearchModeOn,
+                          child: CircleAvatar(
+                            backgroundColor: HexColor(AppColors.mainColor),
+                            radius: 20,
+                            child: SvgPicture.asset(
+                                'assets/images/notification.svg'),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
-                    SizedBox(
-                      height: 230,
-                      width: width,
-                      child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: items.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () async {
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DetailView()));
-                              },
-                              child: SizedBox(
-                                height: 230,
-                                width: 300,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  color: Colors.amber,
+                    Visibility(
+                      visible: dashboardProvider.isSearchModeOn,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Latest News",
+                                style: CustomTextStyle(context)
+                                    .headlineBlack()
+                                    .copyWith(
+                                        color:
+                                            HexColor(AppColors.primaryColor)),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const NewsListView()));
+                                },
+                                child: Row(
+                                  children: [
+                                    Text('See All',
+                                        style: CustomTextStyle(context)
+                                            .blueText()),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(
+                                      Icons.navigate_next,
+                                      color: Colors.blue,
+                                    )
+                                  ],
                                 ),
                               ),
-                            );
-                          }),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      height: kToolbarHeight,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Consumer<DashboardProvider>(
-                          builder: (context, provider, child) => TabBar(
-                              controller: tabController,
-                              isScrollable: true,
-                              labelColor: Colors.white,
-                              unselectedLabelColor: Colors.black,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              indicatorPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 2),
-                              indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: HexColor(AppColors.mainColor)),
-                              onTap: (idx) {
-                                setState(() {
-                                
-                                  provider.setTabIndex(idx);
-                                });
-                              },
-                              tabs: const [
-                                Tab(
-                                  text: 'Healthy ',
-                                ),
-                                Tab(
-                                  text: 'Technology ',
-                                ),
-                                Tab(
-                                  text: 'Finance ',
-                                ),
-                                Tab(
-                                  text: 'Arts ',
-                                ),
-                              ]),
-                        ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            height: 230,
+                            // width: width,
+                            child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: _headlinesNewsdata!.articles.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return headLineCard(index);
+                                }),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                            height: kToolbarHeight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              child: TabBar(
+                                  controller: tabController,
+                                  isScrollable: true,
+                                  labelColor: Colors.white,
+                                  unselectedLabelColor: Colors.black,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  indicatorPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 2),
+                                  indicator: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: HexColor(AppColors.mainColor)),
+                                  onTap: (idx) {
+                                    dashboardProvider.setTabIndex(idx);
+                                    setState(() {
+                                      
+
+                                      if (idx == 0) {
+                                        filterString = "Healthy";
+                                      } else if (idx == 1) {
+                                        filterString = "Technology";
+                                      } else if (idx == 2) {
+                                        filterString = "Finance";
+                                      } else if ((idx == 3)) {
+                                        filterString = "Arts";
+                                      }
+                                      
+                                    });
+                                    dashboardProvider.setTab(filterString);
+                                  },
+                                  tabs: const [
+                                    Tab(
+                                      text: ' Healthy ',
+                                    ),
+                                    Tab(
+                                      text: ' Technology ',
+                                    ),
+                                    Tab(
+                                      text: ' Finance ',
+                                    ),
+                                    Tab(
+                                      text: ' Arts ',
+                                    ),
+                                  ]),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const CategoryView(
+                      
+                    )
                   ],
                 ),
               ),
-              const Expanded(child: CategoryView())
+            ),
+    );
+  }
+
+  InkWell headLineCard(int index) {
+    return InkWell(
+      onTap: () async {
+        await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const DetailView()));
+      },
+      child: SizedBox(
+          height: 230,
+          width: 300,
+          child: Stack(
+            children: [
+              Center(
+                child: Card(
+                  elevation: 5,
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: Colors.white,
+                  child: CachedNetworkImage(
+                    height: 230,
+                    width: 300,
+                    placeholder: (context, url) => Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.cover,
+
+                      // width: double.infinity,
+                    ),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.broken_image,
+                      color: HexColor(AppColors.mainColor),
+                      size: 40,
+                    ),
+                    imageUrl: _headlinesNewsdata!.articles[index].urlToImage,
+                    // width: width,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              _headlinesNewsdata!.articles[index].author.isNotEmpty
+                  ? Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 25),
+                  child: Text(
+                    "By " + _headlinesNewsdata!.articles[index].author,
+                    style: CustomTextStyle(context).body5(),
+                    textAlign: TextAlign.left,
+                  ),
+                    )
+                  : Container(),
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(_headlinesNewsdata!.articles[index].title,
+                    style: CustomTextStyle(context).body4(),
+                    textAlign: TextAlign.left),
+              ))
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

@@ -42,7 +42,14 @@ void setSearchString(String val) {
   int get tabIndex => _tabIndex;
   setTabIndex(int tabIndex) {
     _tabIndex = tabIndex;
-    notifyListeners();
+   notifyListeners();
+  }
+
+  String _selectedTab = "Healthy";
+  String get selectedTab => _selectedTab;
+  setTab(String selectedTab) {
+    _selectedTab = selectedTab;
+   notifyListeners();
   }
 
 

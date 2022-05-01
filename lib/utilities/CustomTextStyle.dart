@@ -45,6 +45,27 @@ class CustomTextStyle {
         fontFamily: 'Nunito-Black'
     );
   }
+  TextStyle body4() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Colors.white,
+        fontSize: _device  == Device.Mobile ? 15 : 25,
+        fontFamily: 'Nunito-Black'
+    );
+  }
+  TextStyle body5() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Colors.white,
+        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontFamily: 'Nunito-Black'
+    );
+  }
+   TextStyle body6() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Colors.black,
+        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontFamily: 'Nunito-Black'
+    );
+  }
   TextStyle body3() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.black,
