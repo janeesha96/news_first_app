@@ -10,6 +10,7 @@ import '../../../providers/dashboardProvider.dart';
 import '../../../utilities/AppColors.dart';
 import '../../../utilities/CustomTextStyle.dart';
 import '../../../utilities/HexColor.dart';
+import '../../../utilities/navigation_utils.dart';
 
 class DetailView extends StatefulWidget {
   const DetailView({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class _DetailViewState extends State<DetailView> {
                 child: Center(
                   child: IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        backButton(context);
                       },
                       icon: Icon(
                         Platform.isIOS

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:news_first_app/utilities/HexColor.dart';
 
 import '../AppColors.dart';
+import '../navigation_utils.dart';
 // import 'package:toast/toast.dart';
 
 class ErrorMsg {
@@ -75,7 +76,7 @@ class ErrorMsg {
                                 child: SizedBox(
                                   child: RaisedButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      backButton(context);
                                     },
                                     child: const Text(
                                       "Ok",

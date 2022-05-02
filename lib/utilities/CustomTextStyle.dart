@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import 'AppColors.dart';
+
+
 import 'DeviceType.dart';
-import 'HexColor.dart';
+
 
 
 class CustomTextStyle {
@@ -18,14 +18,14 @@ class CustomTextStyle {
   TextStyle headline() {
     return Theme.of(context).textTheme.headline5!.copyWith(
       color: Colors.white,
-      fontSize: _device  == Device.Mobile ? 25 : 40,
+      fontSize: _device  == Device.mobile ? 25 : 40,
       fontFamily: 'Nunito-Black',
     );
   }
    TextStyle headlineBlack() {
     return Theme.of(context).textTheme.headline5!.copyWith(
       color: Colors.black,
-      fontSize: _device  == Device.Mobile ? 25 : 40,
+      fontSize: _device  == Device.mobile ? 25 : 40,
       fontFamily: 'Nunito-Black',
     );
   }
@@ -33,7 +33,7 @@ class CustomTextStyle {
   TextStyle subhead() {
     return Theme.of(context).textTheme.subtitle1!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 15 : 30,
+        fontSize: _device  == Device.mobile ? 15 : 30,
         fontFamily: 'Nunito-Light'
     );
   }
@@ -41,42 +41,42 @@ class CustomTextStyle {
   TextStyle body1() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 20 : 30,
+        fontSize: _device  == Device.mobile ? 20 : 30,
         fontFamily: 'Nunito-Black'
     );
   }
   TextStyle body4() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 15 : 25,
+        fontSize: _device  == Device.mobile ? 15 : 25,
         fontFamily: 'Nunito-Black'
     );
   }
   TextStyle body5() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontSize: _device  == Device.mobile ? 12 : 25,
         fontFamily: 'Nunito-Black'
     );
   }
    TextStyle body6() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.black,
-        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontSize: _device  == Device.mobile ? 12 : 25,
         fontFamily: 'Nunito-Black'
     );
   }
    TextStyle body8() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.black,
-        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontSize: _device  == Device.mobile ? 12 : 25,
         fontFamily: 'Nunito-SemiBold'
     );
   }
   TextStyle body3() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.black,
-        fontSize: _device  == Device.Mobile ? 20 : 30,
+        fontSize: _device  == Device.mobile ? 20 : 30,
         fontFamily: 'Nunito-Black'
     );
   }
@@ -85,7 +85,7 @@ class CustomTextStyle {
   TextStyle body2() {
     return Theme.of(context).textTheme.bodyText2!.copyWith(
         color: Colors.black,
-        fontSize: _device  == Device.Mobile ? 15 : 25,
+        fontSize: _device  == Device.mobile ? 15 : 25,
         fontFamily: 'Nunito-SemiBold'
     );
   }
@@ -93,14 +93,14 @@ class CustomTextStyle {
   TextStyle body7() {
     return Theme.of(context).textTheme.bodyText2!.copyWith(
         color: Colors.black,
-        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontSize: _device  == Device.mobile ? 12 : 25,
         fontFamily: 'Nunito-SemiBold'
     );
   }
   TextStyle body2Small() {
     return Theme.of(context).textTheme.bodyText2!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 12.5 : 17,
+        fontSize: _device  == Device.mobile ? 12.5 : 17,
         fontFamily: 'Nunito-Light'
     );
   }
@@ -108,7 +108,7 @@ class CustomTextStyle {
   TextStyle title() {
     return Theme.of(context).textTheme.headline6!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontSize: _device  == Device.mobile ? 12 : 25,
         fontFamily: 'Nunito-Black'
     );
   }
@@ -116,7 +116,7 @@ class CustomTextStyle {
   TextStyle smallButton() {
     return Theme.of(context).textTheme.button!.copyWith(
       color: Colors.white,
-      fontSize: _device  == Device.Mobile ? 15 : 25,
+      fontSize: _device  == Device.mobile ? 15 : 25,
       fontFamily: 'Nunito-Black',
     );
   }
@@ -124,7 +124,7 @@ class CustomTextStyle {
   TextStyle blueText() {
     return Theme.of(context).textTheme.button!.copyWith(
       color: Colors.blue,
-      fontSize: _device  == Device.Mobile ? 15 : 25,
+      fontSize: _device  == Device.mobile ? 15 : 25,
       fontFamily: 'Nunito-SemiBold',
     );
   }
@@ -132,34 +132,21 @@ class CustomTextStyle {
   TextStyle button() {
     return Theme.of(context).textTheme.button!.copyWith(
         color: Colors.white,
-        fontSize: _device  == Device.Mobile ? 20 : 30,
+        fontSize: _device  == Device.mobile ? 20 : 30,
         fontFamily: 'Nunito-Black',
     );
   }
 
-  IconThemeData iconTheme(){
-    return Theme.of(context).iconTheme.copyWith(
-      color: HexColor(AppColors.colorAccent),
-      size: _device  == Device.Mobile ? 30 : 60,
-    );
-  }
-
-  IconThemeData accentIconTheme(){
-    return Theme.of(context).accentIconTheme.copyWith(
-      size:  _device  == Device.Mobile ? 35 : 65,
-    );
-  }
-
   double btnHoriPadding(){
-    return _device == Device.Mobile ? 30 : 40;
+    return _device == Device.mobile ? 30 : 40;
   }
 
   double btnVertiPadding(){
-    return _device == Device.Mobile ? 5 : 10;
+    return _device == Device.mobile ? 5 : 10;
   }
 
   double btnBorderRadious(){
-    return _device == Device.Mobile ? 25 : 35;
+    return _device == Device.mobile ? 25 : 35;
   }
 
   

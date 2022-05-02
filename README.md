@@ -36,8 +36,13 @@ multiple user can regiter to this app,
 before login user should register in the first time.. then user dont need to register
 i could not intergrate the fileter option and top search option becouse of the time limitation.
 
-in the progile tab user can sign out and rederected to the login page. 
+in the profile tab user can sign out and rederected to the login page. 
 if user logged, everytime when the app open user directed to the dashbord.
+
+all the added packages a compatible with ios, android and web aswell.
+
+not tested ios side becouse i dont have a private mac
+
 
 thank you,
 janeesha.
