@@ -43,6 +43,12 @@ all the added packages a compatible with ios, android and web aswell.
 
 not tested ios side becouse i dont have a private mac
 
+here i added apk file and the demovideo link,
+
+demovideo - https://drive.google.com/file/d/1JvZ9iRpke-eG70S6OlgCY0aGgEI-za43/view?usp=sharing
+
+apk file - https://drive.google.com/file/d/1fEq_tuTrwpVG4dXDkVRFT2vjD8WMoCNf/view?usp=sharing
+
 
 thank you,
 janeesha.
