@@ -12,6 +12,7 @@ import '../../utilities/CustomTextStyle.dart';
 import '../../utilities/DeviceType.dart';
 import '../../utilities/HexColor.dart';
 import '../../utilities/SessionManager.dart';
+import '../../utilities/navigation_utils.dart';
 import '../../utilities/widgets/Button.dart';
 
 class Register extends StatefulWidget {
@@ -36,7 +37,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    var textViewHeight = DeviceType(width: width).getType() == Device.Mobile
+    var textViewHeight = DeviceType(width: width).getType() == Device.mobile
         ? width * 0.16
         : width * 0.1;
     return Scaffold(
@@ -258,11 +259,7 @@ class _RegisterState extends State<Register> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()));
+                              openLoginScren(context);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -328,9 +325,7 @@ class _RegisterState extends State<Register> {
   }
 
   bool validateFields() {
-    return (validPass == true &&
-        validName == true &&
-        validConfirmPass == true);
+    return (validPass == true && validName == true && validConfirmPass == true);
   }
 
   void _showLoader(bool visible) {
@@ -344,13 +339,7 @@ class _RegisterState extends State<Register> {
     _showLoader(true);
     SessionManager().setUser(true);
     SessionManager().setUsers(name, password);
-    
-
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomeView()));
-
-
+    openHomeScren(context);
   }
 
   Widget progressView(bool show) {

@@ -1,10 +1,13 @@
-import 'package:flutter/foundation.dart';
+
+
+
+// using device type we can responsive this app... need to implment
 
 
 
 enum Device {
-  Mobile,
-  Tab
+  mobile,
+  tab
 }
 
 
@@ -13,9 +16,9 @@ class DeviceType{
   DeviceType({required this.width});
   Device getType(){
     if(width >= 600){
-      return Device.Tab;
+      return Device.tab;
     }else{
-      return Device.Mobile;
+      return Device.mobile;
     }
   }
 }

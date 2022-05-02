@@ -8,6 +8,7 @@ import '../../../services/apiServices.dart';
 import '../../../utilities/AppColors.dart';
 import '../../../utilities/CustomTextStyle.dart';
 import '../../../utilities/HexColor.dart';
+import '../../../utilities/navigation_utils.dart';
 import 'detailView.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -85,8 +86,7 @@ class _CategoryViewState extends State<CategoryView> {
       onTap: () {
         dashboardProvider.singleSelectedNews =
             _categoryNewsdata!.articles[index];
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DetailView()));
+        openDetailScreen(context);
       },
       child: SizedBox(
           height: 130,

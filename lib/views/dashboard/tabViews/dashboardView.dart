@@ -11,6 +11,7 @@ import '../../../utilities/AppColors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utilities/CustomTextStyle.dart';
+import '../../../utilities/navigation_utils.dart';
 import '../../../utilities/widgets/Button.dart';
 import 'categoryView.dart';
 import 'detailView.dart';
@@ -49,7 +50,6 @@ class _DashboardViewState extends State<DashboardView>
 
   void _getNewsData() async {
     _headlinesNewsdata = await NewsApiService.getNewsHeadLines();
-    print(_headlinesNewsdata);
 
     if (_headlinesNewsdata != null) {
       setState(() {
@@ -296,11 +296,11 @@ class _DashboardViewState extends State<DashboardView>
     final dashboardProvider =
         Provider.of<DashboardProvider>(context, listen: true);
     return InkWell(
-      onTap: () async {
+      onTap: () {
         dashboardProvider.singleSelectedNews =
             _headlinesNewsdata!.articles[index];
-        await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DetailView()));
+
+        openDetailScreen(context);
       },
       child: SizedBox(
           height: 200,
@@ -420,6 +420,7 @@ class _DashboardViewState extends State<DashboardView>
                   itemClick: () {
                     // login();
                   },
+                  // you can use any textstyle you want
                   textStyle: null,
                 ),
               ],

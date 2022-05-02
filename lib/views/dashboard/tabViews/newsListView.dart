@@ -13,6 +13,7 @@ import '../../../services/apiServices.dart';
 import '../../../utilities/AppColors.dart';
 import '../../../utilities/CustomTextStyle.dart';
 import '../../../utilities/HexColor.dart';
+import '../../../utilities/navigation_utils.dart';
 
 class NewsListView extends StatefulWidget {
   const NewsListView({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _NewsListViewState extends State<NewsListView> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              backButton(context);
             },
             icon: Icon(
               Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,

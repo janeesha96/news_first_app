@@ -8,6 +8,7 @@ import '../../utilities/AppColors.dart';
 import '../../utilities/CustomTextStyle.dart';
 import '../../utilities/DeviceType.dart';
 import '../../utilities/HexColor.dart';
+import '../../utilities/navigation_utils.dart';
 import '../../utilities/widgets/customToast.dart';
 import 'userRegistraionScreen.dart';
 
@@ -19,7 +20,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool loaderVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool validName = false, validPass = false;
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    var textViewHeight = DeviceType(width: width).getType() == Device.Mobile
+    var textViewHeight = DeviceType(width: width).getType() == Device.mobile
         ? width * 0.16
         : width * 0.1;
     return Scaffold(
@@ -196,11 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             margin: const EdgeInsets.only(top: 40, bottom: 40),
                           ),
                           InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Register()));
+                            onTap: () {
+                              openSignupScren(context);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -268,24 +265,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
-
-   validUser = await SessionManager().validateUser(name, password);
-   if(validUser!){
-
-     SessionManager().setUser(true);
-     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomeView()));
-        
-
-   } else {
-     ErrorMsg.show(context, 'Error', "Invalid username or password",
-              key: _scaffoldKey);
-
-   }
-
-
-
-
-    
+    validUser = await SessionManager().validateUser(name, password);
+    if (validUser!) {
+      SessionManager().setUser(true);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomeView()));
+    } else {
+      ErrorMsg.show(context, 'Error', "Invalid username or password",
+          key: _scaffoldKey);
+    }
   }
 }
