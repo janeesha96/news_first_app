@@ -11,6 +11,7 @@ import '../../../utilities/AppColors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utilities/CustomTextStyle.dart';
+import '../../../utilities/widgets/Button.dart';
 import 'categoryView.dart';
 import 'detailView.dart';
 import 'newsListView.dart';
@@ -28,19 +29,8 @@ class _DashboardViewState extends State<DashboardView>
   late final TabController tabController;
   NewsData? _headlinesNewsdata;
   String filterString = "Healthy";
-  late int articleLength;
 
   bool isLoading = false;
-  List<int> items = [
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    8,
-  ];
 
   @override
   void initState() {
@@ -70,7 +60,6 @@ class _DashboardViewState extends State<DashboardView>
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final dashboardProvider = Provider.of<DashboardProvider>(context);
     return SafeArea(
@@ -156,6 +145,36 @@ class _DashboardViewState extends State<DashboardView>
                     const SizedBox(
                       height: 15,
                     ),
+                    InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                            // isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(30))),
+                            context: context,
+                            builder: (context) => buildBottomSheet());
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: HexColor(AppColors.mainColor)),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: Text('Filter',
+                                style: CustomTextStyle(context)
+                                    .blueText()
+                                    .copyWith(color: Colors.white)),
+                          ),
+                        ),
+                        // height: 15
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     Visibility(
                       visible: dashboardProvider.isSearchModeOn,
                       child: Column(
@@ -200,7 +219,7 @@ class _DashboardViewState extends State<DashboardView>
                             height: 10,
                           ),
                           SizedBox(
-                            height: 230,
+                            height: 200,
                             // width: width,
                             child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
@@ -234,8 +253,6 @@ class _DashboardViewState extends State<DashboardView>
                                   onTap: (idx) {
                                     dashboardProvider.setTabIndex(idx);
                                     setState(() {
-                                      
-
                                       if (idx == 0) {
                                         filterString = "Healthy";
                                       } else if (idx == 1) {
@@ -245,7 +262,6 @@ class _DashboardViewState extends State<DashboardView>
                                       } else if ((idx == 3)) {
                                         filterString = "Arts";
                                       }
-                                      
                                     });
                                     dashboardProvider.setTab(filterString);
                                   },
@@ -268,9 +284,7 @@ class _DashboardViewState extends State<DashboardView>
                         ],
                       ),
                     ),
-                    const CategoryView(
-                      
-                    )
+                    const CategoryView()
                   ],
                 ),
               ),
@@ -279,13 +293,17 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   InkWell headLineCard(int index) {
+    final dashboardProvider =
+        Provider.of<DashboardProvider>(context, listen: true);
     return InkWell(
       onTap: () async {
+        dashboardProvider.singleSelectedNews =
+            _headlinesNewsdata!.articles[index];
         await Navigator.push(context,
             MaterialPageRoute(builder: (context) => const DetailView()));
       },
       child: SizedBox(
-          height: 230,
+          height: 200,
           width: 300,
           child: Stack(
             children: [
@@ -299,7 +317,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                   color: Colors.white,
                   child: CachedNetworkImage(
-                    height: 230,
+                    height: 200,
                     width: 300,
                     placeholder: (context, url) => Image.asset(
                       'assets/images/logo.png',
@@ -320,12 +338,12 @@ class _DashboardViewState extends State<DashboardView>
               ),
               _headlinesNewsdata!.articles[index].author.isNotEmpty
                   ? Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 25),
-                  child: Text(
-                    "By " + _headlinesNewsdata!.articles[index].author,
-                    style: CustomTextStyle(context).body5(),
-                    textAlign: TextAlign.left,
-                  ),
+                      padding: const EdgeInsets.only(left: 20, top: 25),
+                      child: Text(
+                        "By " + _headlinesNewsdata!.articles[index].author,
+                        style: CustomTextStyle(context).body5(),
+                        textAlign: TextAlign.left,
+                      ),
                     )
                   : Container(),
               Center(
@@ -337,6 +355,78 @@ class _DashboardViewState extends State<DashboardView>
               ))
             ],
           )),
+    );
+  }
+
+  Widget buildBottomSheet() {
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          )),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Filter",
+                  style: CustomTextStyle(context)
+                      .headlineBlack()
+                      .copyWith(color: HexColor(AppColors.primaryColor)),
+                ),
+                const Spacer(),
+                Button(
+                  name: ' Reset ',
+                  itemClick: () {
+                    // login();
+                  },
+                  textStyle: null,
+                ),
+              ],
+            ),
+            Text(
+              "Sort By",
+              style: CustomTextStyle(context)
+                  .body2()
+                  .copyWith(color: HexColor(AppColors.primaryColor)),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Button2(
+                  name: 'category',
+                  itemClick: () {
+                    // login();
+                  },
+                  textStyle: null,
+                ),
+                Button2(
+                  name: 'language',
+                  itemClick: () {
+                    // login();
+                  },
+                  textStyle: null,
+                ),
+                Button2(
+                  name: 'country',
+                  itemClick: () {
+                    // login();
+                  },
+                  textStyle: null,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

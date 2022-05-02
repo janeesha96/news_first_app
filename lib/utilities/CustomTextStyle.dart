@@ -66,6 +66,13 @@ class CustomTextStyle {
         fontFamily: 'Nunito-Black'
     );
   }
+   TextStyle body8() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Colors.black,
+        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontFamily: 'Nunito-SemiBold'
+    );
+  }
   TextStyle body3() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
         color: Colors.black,
@@ -82,7 +89,14 @@ class CustomTextStyle {
         fontFamily: 'Nunito-SemiBold'
     );
   }
-
+  
+  TextStyle body7() {
+    return Theme.of(context).textTheme.bodyText2!.copyWith(
+        color: Colors.black,
+        fontSize: _device  == Device.Mobile ? 12 : 25,
+        fontFamily: 'Nunito-SemiBold'
+    );
+  }
   TextStyle body2Small() {
     return Theme.of(context).textTheme.bodyText2!.copyWith(
         color: Colors.white,

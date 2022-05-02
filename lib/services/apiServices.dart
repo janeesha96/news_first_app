@@ -47,4 +47,22 @@ class NewsApiService {
     }
   }
 
+  static Future<NewsData?>getAllNews({ String? filterText , int? pageSize, int? pageNo}) async {
+
+
+    var url = Uri.parse("https://newsapi.org/v2/everything?apiKey=$apikey&pageSize=$pageSize&page=$pageNo&q=$filterText");
+
+
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return NewsData.fromJson(data);
+      }
+     return null;
+    } catch (err) {
+      return  null;
+    }
+  }
+
 }

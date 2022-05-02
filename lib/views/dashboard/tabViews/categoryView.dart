@@ -24,7 +24,6 @@ class _CategoryViewState extends State<CategoryView> {
   bool isLoading = false;
 
   NewsData? _categoryNewsdata;
- 
 
   @override
   void initState() {
@@ -44,11 +43,9 @@ class _CategoryViewState extends State<CategoryView> {
       filterText: dashboardProvider.selectedTab,
     );
 
-
     if (_categoryNewsdata != null) {
       setState(() {
         isLoading = false;
-      
       });
     }
   }
@@ -81,9 +78,13 @@ class _CategoryViewState extends State<CategoryView> {
   }
 
   InkWell categoryCard(int index) {
+    final dashboardProvider =
+        Provider.of<DashboardProvider>(context, listen: true);
     double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
+        dashboardProvider.singleSelectedNews =
+            _categoryNewsdata!.articles[index];
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const DetailView()));
       },
@@ -118,7 +119,7 @@ class _CategoryViewState extends State<CategoryView> {
                   ),
                 ),
               ),
-              _categoryNewsdata!.articles[index].author.isNotEmpty
+              _categoryNewsdata!.articles[index].title.isNotEmpty
                   ? Padding(
                       padding:
                           const EdgeInsets.only(left: 20, top: 25, right: 20),
