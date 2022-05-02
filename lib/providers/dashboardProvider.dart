@@ -3,6 +3,9 @@
 
 import 'package:flutter/material.dart';
 
+import '../models/newsArticles.dart';
+
+
 class DashboardProvider extends ChangeNotifier {
     int? _currentTab;
 
@@ -10,15 +13,6 @@ class DashboardProvider extends ChangeNotifier {
 
   set currentTab(int data) {
     _currentTab = data;
-    notifyListeners();
-  }
-
-  int? _reportsCurrentTab;
-
-  int get reportsCurrentTab => _reportsCurrentTab ?? 0;
-
-  set reportsCurrentTab(int data) {
-    _reportsCurrentTab = data;
     notifyListeners();
   }
 
@@ -42,6 +36,22 @@ void setSearchString(String val) {
   int get tabIndex => _tabIndex;
   setTabIndex(int tabIndex) {
     _tabIndex = tabIndex;
+   notifyListeners();
+  }
+
+  String _selectedTab = "Healthy";
+  String get selectedTab => _selectedTab;
+  setTab(String selectedTab) {
+    _selectedTab = selectedTab;
+   notifyListeners();
+  }
+
+  late NewsArticles _selectedNews;
+
+  NewsArticles get selectedNews => _selectedNews;
+
+ set singleSelectedNews (NewsArticles selectedNews){
+    _selectedNews = selectedNews;
     notifyListeners();
   }
 

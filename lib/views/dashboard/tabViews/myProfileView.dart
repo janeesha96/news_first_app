@@ -15,10 +15,8 @@ class MyProfileView extends StatefulWidget {
 }
 
 class _MyProfileViewState extends State<MyProfileView> {
-  
   @override
   Widget build(BuildContext context) {
-    
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -51,8 +49,9 @@ class _MyProfileViewState extends State<MyProfileView> {
   }
 
   logOut() {
-   final dashboardProvider = Provider.of<DashboardProvider>(context,listen: false);
-   dashboardProvider.currentTab = 0;
+    final dashboardProvider =
+        Provider.of<DashboardProvider>(context, listen: false);
+    dashboardProvider.currentTab = 0;
     SessionManager().deleteUser();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const LoginScreen()));
